@@ -1,4 +1,4 @@
-package org.educa.ut3.chat.tcp.servidor.hilos;
+package org.educa.ut3.chat.tcp.hilos;
 
 import org.educa.ut3.chat.compartidos.entity.UsuarioEntity;
 

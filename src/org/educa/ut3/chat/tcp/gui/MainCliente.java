@@ -2,7 +2,6 @@ package org.educa.ut3.chat.tcp.gui;
 
 import org.educa.ut3.chat.compartidos.entity.UsuarioEntity;
 import org.educa.ut3.chat.compartidos.ui.ChatUI;
-import org.educa.ut3.chat.tcp.gui.hilos.Mensajes;
 
 import javax.swing.*;
 import java.io.DataInputStream;
@@ -39,13 +38,14 @@ public class MainCliente {
             } while (!texto.equals("[FIN]"));
 
             // Comienza el chat
-            // Lectura de mensajes
-            new Mensajes(cliente, dis, chatUI, usuario).start();
-
-            // Escritura de mensajes
+            // Escritura y lectura de mensajes
             while (true) {
-                // Bucle para enviar mensajes
-                // Simplemente debe mantenerse abierto para poder mantener la conexion
+                // Leemos el mensaje
+                String mensaje = dis.readUTF();
+                // Mostramos el mensaje en nuestro chat
+                if (!mensaje.contains(usuario.getNickname()) && mensaje.contains("~")) {
+                    chatUI.getMessageArea().append(mensaje + "\n");
+                }
             }
         } catch (IOException e) {
             System.err.println("[ERROR CON EL SERVIDOR] -> " + e.getMessage());

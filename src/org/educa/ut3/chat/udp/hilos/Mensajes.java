@@ -1,7 +1,6 @@
-package org.educa.ut3.chat.udp.gui.hilos;
+package org.educa.ut3.chat.udp.hilos;
 
 import org.educa.ut3.chat.compartidos.entity.UsuarioEntity;
-import org.educa.ut3.chat.compartidos.ui.ChatUI;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -10,14 +9,15 @@ import java.net.DatagramSocket;
 
 public class Mensajes extends Thread {
 
+    private static final String PURPLE = "\u001B[35m";
+    private static final String RESET = "\u001B[0m";
+
     private final UsuarioEntity usuarioActual;
     private final DatagramSocket cliente;
-    private final ChatUI chatUI;
 
-    public Mensajes(DatagramSocket cliente, UsuarioEntity usuarioActual, ChatUI chatUI) {
+    public Mensajes(DatagramSocket cliente, UsuarioEntity usuarioActual) {
         this.cliente = cliente;
         this.usuarioActual = usuarioActual;
-        this.chatUI = chatUI;
     }
 
     @Override
@@ -27,7 +27,10 @@ public class Mensajes extends Thread {
                 try {
                     String mensaje = recibirMensaje(cliente);
                     if (!mensaje.contains(usuarioActual.getNickname())) {
-                        chatUI.getMessageArea().append(mensaje + "\n\n");
+                        // Se posiciona al principio de la línea y imprime el mensaje, de esta manera se borra la linea del usuario en la que escribe
+                        System.out.println("\r" + mensaje);
+                        // Vuelve a mostrar el prompt del usuario
+                        System.out.print(PURPLE + usuarioActual.getNickname() + " ~ " + RESET);
                     }
                 } catch (EOFException e) {
                     System.err.println("[ERROR] -> " + e.getMessage());
@@ -39,6 +42,7 @@ public class Mensajes extends Thread {
         }
     }
 
+    // Metodo para recibir mensajes
     private String recibirMensaje(DatagramSocket cliente) throws IOException {
         byte[] datos = new byte[1024];
         DatagramPacket paquete = new DatagramPacket(datos, datos.length);

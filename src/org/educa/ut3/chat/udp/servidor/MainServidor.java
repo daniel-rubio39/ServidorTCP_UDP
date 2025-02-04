@@ -1,7 +1,7 @@
 package org.educa.ut3.chat.udp.servidor;
 
 import org.educa.ut3.chat.compartidos.entity.UsuarioEntity;
-import org.educa.ut3.chat.udp.servidor.hilos.Manejador;
+import org.educa.ut3.chat.udp.hilos.Manejador;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

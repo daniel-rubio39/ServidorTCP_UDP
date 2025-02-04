@@ -1,7 +1,7 @@
 package org.educa.ut3.chat.tcp.cli;
 
 import org.educa.ut3.chat.compartidos.entity.UsuarioEntity;
-import org.educa.ut3.chat.tcp.cli.hilos.Mensajes;
+import org.educa.ut3.chat.tcp.hilos.Mensajes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

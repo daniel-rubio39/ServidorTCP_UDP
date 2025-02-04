@@ -1,7 +1,7 @@
 package org.educa.ut3.chat.udp.cli;
 
 import org.educa.ut3.chat.compartidos.entity.UsuarioEntity;
-import org.educa.ut3.chat.udp.cli.hilos.Mensajes;
+import org.educa.ut3.chat.udp.hilos.Mensajes;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

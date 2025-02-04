@@ -1,7 +1,6 @@
-package org.educa.ut3.chat.tcp.gui.hilos;
+package org.educa.ut3.chat.tcp.hilos;
 
 import org.educa.ut3.chat.compartidos.entity.UsuarioEntity;
-import org.educa.ut3.chat.compartidos.ui.ChatUI;
 
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -10,29 +9,30 @@ import java.net.Socket;
 
 public class Mensajes extends Thread {
 
+    private static final String PURPLE = "\u001B[35m";
+    private static final String RESET = "\u001B[0m";
+
+    private final UsuarioEntity usuarioActual;
     private final Socket cliente;
     private final DataInputStream dis;
-    private final ChatUI chatUI;
-    private final UsuarioEntity usuario;
 
-    public Mensajes(Socket cliente, DataInputStream dis, ChatUI chatUI, UsuarioEntity usuario) {
+    public Mensajes(UsuarioEntity usuarioActual, Socket cliente, DataInputStream dis) {
+        this.usuarioActual = usuarioActual;
         this.cliente = cliente;
         this.dis = dis;
-        this.chatUI = chatUI;
-        this.usuario = usuario;
     }
 
     @Override
     public void run() {
         try {
-            // Mientras que el cliente este conectado el hilo estara constantemente leyendo mensajes
             while (!cliente.isClosed()) {
                 try {
-                    // Leemos el mensaje
                     String mensaje = dis.readUTF();
-                    // Mostramos el mensaje en nuestro chat
-                    if (!mensaje.contains(usuario.getNickname()) && mensaje.contains("~")) {
-                        chatUI.getMessageArea().append(mensaje + "\n");
+                    if (!mensaje.contains(usuarioActual.getNickname())) {
+                        // Se posiciona al principio de la línea y imprime el mensaje, de esta manera se borra la linea del usuario en la que escribe
+                        System.out.println("\r" + mensaje);
+                        // Vuelve a mostrar el prompt del usuario
+                        System.out.print(PURPLE + usuarioActual.getNickname() + " ~ " + RESET);
                     }
                 } catch (EOFException e) {
                     System.err.println("[ERROR] -> " + e.getMessage());
