@@ -107,7 +107,4 @@ public class Manejador extends Thread {
         servidor.send(paquete);
     }
 
-    public UsuarioEntity getUsuarioActual() {
-        return usuarioActual;
-    }
 }
