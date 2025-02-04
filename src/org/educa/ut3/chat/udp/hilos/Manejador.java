@@ -55,15 +55,15 @@ public class Manejador extends Thread {
             // Bucle del java.chat que intercambia los mensajes
             while (true) {
                 String mensaje = recibirMensaje();
-                mensajes.add(mensaje);
                 if (mensaje.equals("[FIN]")) {
                     break;
-                }
-
-                // Si el destinatario está conectado, enviamos el mensaje
-                for (Map.Entry<UsuarioEntity, InetSocketAddress> e : conexiones.entrySet()) {
-                    InetSocketAddress destinatarioSocket = conexiones.get(e.getKey());
-                    enviarMensaje(mensaje, destinatarioSocket.getAddress(), destinatarioSocket.getPort());
+                } else if (mensaje.contains("~")) {
+                    mensajes.add(mensaje);
+                    // Si el destinatario está conectado, enviamos el mensaje
+                    for (Map.Entry<UsuarioEntity, InetSocketAddress> e : conexiones.entrySet()) {
+                        InetSocketAddress destinatarioSocket = conexiones.get(e.getKey());
+                        enviarMensaje(mensaje, destinatarioSocket.getAddress(), destinatarioSocket.getPort());
+                    }
                 }
             }
 
